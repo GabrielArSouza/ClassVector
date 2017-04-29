@@ -1,3 +1,2 @@
-all:
-
+# Ignore whole folder .exe
 *.exe
