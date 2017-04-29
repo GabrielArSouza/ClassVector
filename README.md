@@ -1,1 +1,1 @@
-# Class Vector
+# Vector Class
