@@ -1,2 +1,5 @@
-# Ignore whole folder .exe
+# Compiled source #
+###################
+*.dll
 *.exe
+*.so
