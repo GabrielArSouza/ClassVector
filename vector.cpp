@@ -2,6 +2,8 @@
 #include <string>
 #include <iterator>
 #include <stdexcept> // out_of_range
+#include <cassert>
+#include <algorithm>
 
 namespace ls 
 {
@@ -11,39 +13,64 @@ namespace ls
 	template <typename T>
 	class MyIterator {
 
+	private:
+		T *m_ptr;
+
 	public:
-		MyIterator( ) {}
-		//const Object & operator* ( ) const;
+
+		MyIterator( T * ptr_ = nullptr ) 
+			:m_ptr( ptr_ )
+		{ /*empty*/ } 
+
+		~MyIterator() = default;
+		MyIterator( const MyIterator & ) = default;
+		MyIterator & operator=( const MyIterator & ) = default;
+
+		const T & operator* ( ) const
+		{
+			assert( m_ptr != nullptr );
+			return *m_ptr;
+		}
 		
 		// ++it;
 		MyIterator & operator++ ( )
 		{
-			return &(current+1);
+			m_ptr++;
+			return *this;
 		}	
 
 		// it++;
 		MyIterator operator++ ( int a )
 		{
-			return &(current+1);
+			MyIterator temp = *this;
+			m_ptr++;
+			return temp;
 		}
 
 		// --it;
 		MyIterator & operator-- ( )
 		{
-			return &(current-1);
+			m_ptr--;
+			return *this;
 		}  
 
 		// it--;
 		MyIterator operator-- ( int a )
 		{
-			return &(current-1);
+			MyIterator temp = *this;
+			m_ptr--;
+			return temp;
 		}
 		                                // 
-		bool operator== ( const MyIterator & rhs ) const;
-		bool operator!= ( const MyIterator & rhs ) const;
+		bool operator== ( const MyIterator & rhs ) const
+		{
+			return m_ptr == rhs.m_ptr;
+		}
 
-	private:
-		T *current;
+		bool operator!= ( const MyIterator & rhs ) const
+		{
+			return m_ptr != rhs.m_ptr;
+		}
 
 	};
 
@@ -140,24 +167,16 @@ namespace ls
 
 		// [II] ITERATORS
 		iterator begin( void )
-		{
-			return &m_data[0];
-		}
+		{ return iterator ( &m_data[0] ); }
 
 		iterator end( void )
-		{
-			return &m_data[m_len+1];
-		}
+		{ return iterator ( &m_data[m_len] ); }
 
 		const_iterator cbegin( void ) const
-		{
-			return &m_data[0];
-		}
+		{ return const_iterator ( &m_data[0] ); }
 
 		const_iterator cend( void ) const
-		{
-			return &m_data[m_len+1];
-		}
+		{ return const_iterator ( &m_data[m_len] ); }
 
 		// [III] Capacity
 		size_type size( void ) const
@@ -220,7 +239,12 @@ namespace ls
 			m_len--;
 		}
 
-		// iterator insert( iterator , const_reference );
+		// iterator insert( iterator pos, const_reference value )
+		// {
+		// 	--pos;
+		// 	*(m_data+pos) = value;
+		// 	return pos;
+		// }
 
 		// template < typename InputItr >
 		// iterator insert( iterator , InputItr , InputItr );
@@ -263,7 +287,7 @@ namespace ls
 		// void assign( InputItr, InputItr );
 
 		// iterator erase( iterator, iterator );
-		// iterator erase( iterator );
+		// iterator erase( iterator pos );
 
 		// [V] Element access
 		const_reference back( void ) const
@@ -357,20 +381,20 @@ namespace ls
 int main ()
 {
 	//testando construtores
-	{
-		std::cout << "Construtor Defaut\n";
-		ls::vector<int> v;
-		v.print();
+	// {
+	// 	std::cout << "Construtor Defaut\n";
+	// 	ls::vector<int> v;
+	// 	v.print();
 
-		std::cout << "Construtor com tamanho\n";
-		ls::vector<int> v2(100);
-		v2.print();
+	// 	std::cout << "Construtor com tamanho\n";
+	// 	ls::vector<int> v2(100);
+	// 	v2.print();
 
-		std::cout << "Testando =\n";
-		v2 = v;
-		v2.print();
+	// 	std::cout << "Testando =\n";
+	// 	v2 = v;
+	// 	v2.print();
 
-	}
+	// }
 
 	// {
 	// 	ls::vector<int> v;
@@ -398,35 +422,58 @@ int main ()
 
 	// }
 
+	// {
+	// 	ls::vector<int> v1;
+	// 	ls::vector<int> v2;
+
+	// 	int aux;
+	// 	std::cout << "Entre com números v1...\n";
+	// 	while ( std::cin >> aux && aux != 404 )
+	// 	{
+	// 		v1.push_back(aux);
+	// 	}
+
+	// 	std::cout << "Entre com números v2...\n";
+	// 	while ( std::cin >> aux && aux != 404 )
+	// 	{
+	// 		v2.push_back(aux);
+	// 	}
+
+	// 	v1.print();
+	// 	v2.print();
+
+	// 	std::cout << ">>> Testando o ==\n";
+	// 	if ( v1 == v2 ) std::cout << " Eles são iguais\n";
+	// 	else std::cout << " Eles são diferentes\n";
+
+	// 	std::cout << ">>> Testando o !=\n";
+	// 	if ( v1 != v2 ) std::cout << " Eles são diferentes\n";
+	// 	else std::cout << " Eles são iguais\n";
+
+
+	// }
+
 	{
-		ls::vector<int> v1;
-		ls::vector<int> v2;
 
-		int aux;
-		std::cout << "Entre com números v1...\n";
-		while ( std::cin >> aux && aux != 404 )
-		{
-			v1.push_back(aux);
-		}
+		ls::vector<int> v(10);
+		ls::vector<int>::iterator it = v.begin();
 
-		std::cout << "Entre com números v2...\n";
-		while ( std::cin >> aux && aux != 404 )
-		{
-			v2.push_back(aux);
-		}
+		for ( auto i(0); i < 10; ++i )
+			v.push_back( i+1 );
 
-		v1.print();
-		v2.print();
+		v.print();
 
-		std::cout << ">>> Testando o ==\n";
-		if ( v1 == v2 ) std::cout << " Eles são iguais\n";
-		else std::cout << " Eles são diferentes\n";
+		std::cout << ">>> begin() = " << *it << "\n";
+		++it;
+		std::cout << ">>> posição 2: " << *it << "\n";
+		it++;
+		std::cout << ">>> posição 3: " << *it << "\n";
+		--it;
+		std::cout << ">>> posição 2: " << *it << "\n";
+		it--;
+		std::cout << ">>> posição 1: " << *it << "\n";
 
-		std::cout << ">>> Testando o !=\n";
-		if ( v1 != v2 ) std::cout << " Eles são diferentes\n";
-		else std::cout << " Eles são iguais\n";
-
-
+				
 	}
 
 	return EXIT_SUCCESS;
