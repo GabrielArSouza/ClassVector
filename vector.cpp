@@ -136,15 +136,14 @@ namespace ls
 			other.m_data = nullptr;
 		}
 
-		template < typename InputItr >
-		vector( InputItr first, InputItr last)
-		{
-			m_data = new T;
-			for ( /*empty*/; first < last; ++first, ++m_data)
-			{
-				*m_data = *first;
-			}
-		}
+		// template < typename InputItr >
+		// vector( InputItr first, InputItr last)
+		// {
+		// 	m_data = new T;
+		// 	for (auto i(0); first != last; ++first, ++i)
+		// 		m_data[i] = (*first);
+		// 	shrink_to_fit();
+		// }
 
 		vector &operator= ( const vector & other )
 		{
@@ -239,15 +238,55 @@ namespace ls
 			m_len--;
 		}
 
-		// iterator insert( iterator pos, const_reference value )
-		// {
-		// 	--pos;
-		// 	*(m_data+pos) = value;
-		// 	return pos;
-		// }
+		iterator insert( iterator pos, const_reference value )
+		{
+			auto i = 0;
+			auto cont = 0;
+			
+			while ( *pos != m_data[i] )
+			{
+				cont++;
+				i++;
+			}
 
-		// template < typename InputItr >
-		// iterator insert( iterator , InputItr , InputItr );
+			std::copy(&m_data[cont], &m_data[m_len], &m_data[cont+1]);
+			m_data[cont] = value;
+			m_len++;
+
+			return pos;
+		}
+
+		template < typename InputItr >
+		iterator insert( iterator pos, InputItr first, InputItr last)
+		{
+			auto i = 0;
+			auto cont = 0;
+			
+			while ( *pos != m_data[i] )
+			{
+				cont++;
+				i++;
+			}
+			auto temp = first;
+			auto d(0);
+			while ( *temp != *last )
+			{
+				d++;
+				temp++;
+			} 
+			
+			std::copy(&m_data[cont], &m_data[m_len], &m_data[cont+d]);
+
+			for (/*empty*/; first != last; ++first, ++cont)
+			{
+				m_data[cont] = *first;
+				m_len++;
+
+			}
+
+			return pos;
+
+		}
 
 		// iterator insert( iterator, std::initializer_list< value_type > );
 		
@@ -380,82 +419,10 @@ namespace ls
 
 int main ()
 {
-	//testando construtores
-	// {
-	// 	std::cout << "Construtor Defaut\n";
-	// 	ls::vector<int> v;
-	// 	v.print();
-
-	// 	std::cout << "Construtor com tamanho\n";
-	// 	ls::vector<int> v2(100);
-	// 	v2.print();
-
-	// 	std::cout << "Testando =\n";
-	// 	v2 = v;
-	// 	v2.print();
-
-	// }
-
-	// {
-	// 	ls::vector<int> v;
-
-	// 	int aux;
-	// 	std::cout << "Entre com números...\n";
-	// 	while ( std::cin >> aux && aux != 404 )
-	// 	{
-	// 		v.push_front(aux);
-	// 	}
-
-	// 	v.print();
-
-	// 	std::cout << ">> Testando o pop_back\n ";
-	// 	v.pop_back();
-	// 	v.print();
-
-	// 	std::cout << ">> Testando o pop_front\n ";
-	// 	v.pop_front();
-	// 	v.print();
-
-	// 	// std::cout << ">>> Testando o begin: " << v.begin() << "\n";
-	// 	// std::cout << ">>> Testando o end: " << v.end() << "\n";
-
-
-	// }
-
-	// {
-	// 	ls::vector<int> v1;
-	// 	ls::vector<int> v2;
-
-	// 	int aux;
-	// 	std::cout << "Entre com números v1...\n";
-	// 	while ( std::cin >> aux && aux != 404 )
-	// 	{
-	// 		v1.push_back(aux);
-	// 	}
-
-	// 	std::cout << "Entre com números v2...\n";
-	// 	while ( std::cin >> aux && aux != 404 )
-	// 	{
-	// 		v2.push_back(aux);
-	// 	}
-
-	// 	v1.print();
-	// 	v2.print();
-
-	// 	std::cout << ">>> Testando o ==\n";
-	// 	if ( v1 == v2 ) std::cout << " Eles são iguais\n";
-	// 	else std::cout << " Eles são diferentes\n";
-
-	// 	std::cout << ">>> Testando o !=\n";
-	// 	if ( v1 != v2 ) std::cout << " Eles são diferentes\n";
-	// 	else std::cout << " Eles são iguais\n";
-
-
-	// }
-
+	
 	{
 
-		ls::vector<int> v(10);
+		ls::vector<int> v(20);
 		ls::vector<int>::iterator it = v.begin();
 
 		for ( auto i(0); i < 10; ++i )
@@ -473,6 +440,20 @@ int main ()
 		it--;
 		std::cout << ">>> posição 1: " << *it << "\n";
 
+		
+		ls::vector<int> v2(20);
+		ls::vector<int>::iterator it2 = v2.begin();
+
+		for ( auto i(100); i < 1000; i+=100 )
+			v2.push_back( i );	
+
+		std::cout << ">>Antes: \n";
+		v2.print();
+
+		v2.insert(++it2, v.begin(), v.end());
+		std::cout << ">>Depois: \n";
+		v2.print();
+		
 				
 	}
 
