@@ -136,6 +136,7 @@ namespace ls
 			other.m_data = nullptr;
 		}
 
+		/*>>std::distance e alocar a memória com o tamanho e o copy<<*/
 		// template < typename InputItr >
 		// vector( InputItr first, InputItr last)
 		// {
@@ -312,7 +313,8 @@ namespace ls
 			for (auto i(0u); i <= m_len; ++i)
 				*(m_data+i) = value;
 		}
-
+		
+		//initializer é {1, 2, 3, 4 }
 		void assign( std::initializer_list<T> value )
 		{
 			if ( this->empty() )
@@ -402,6 +404,7 @@ namespace ls
 		}
 
 		// [VII] Friend functions.
+		/*uma função, ele não é um método*/
 		//friend std::ostream & operator<<( std::ostream & os_, const Vector<T> & v_ );
 		// friend void swap( Vector<T> & first_, Vector<T> & second_ );
 		// 
