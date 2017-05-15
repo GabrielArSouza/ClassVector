@@ -36,8 +36,8 @@ int main ()
 		v2.insert(++it2, v.begin(), v.end());
 		std::cout << ">>Depois: \n";
 		v2.print();
-		
-				
+
+					
 	}
 
 	return EXIT_SUCCESS;
