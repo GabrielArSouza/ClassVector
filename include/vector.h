@@ -13,8 +13,6 @@
 
 		using size_type = size_t;
 
-			
-
 		template <typename T>
 		class vector {
 
@@ -33,7 +31,7 @@
 				MyIterator( const MyIterator & ) = default;
 				MyIterator & operator=( const MyIterator & ) = default;
 
-				const T & operator* ( ) const;
+				T & operator* ( );
 				
 				// ++it;
 				MyIterator & operator++ ( );	
@@ -91,7 +89,7 @@
 			}
 
 			/**
-			 * @brief      Constrói a lista com a cópia profunda do conteúdo de copy
+			 * @brief      Constrói a lista com a cópia do conteúdo de copy
 			 * @param[in]  copy  Conteúdo a ser copiado
 			 */
 			vector( const vector & copy )
@@ -112,15 +110,45 @@
 				other.m_data = nullptr;
 			}
 
-			/*>>std::distance e alocar a memória com o tamanho e o copy<<*/
-			// template < typename InputItr >
-			// vector( InputItr first, InputItr last)
-			// {
-			// 	m_data = new T;
-			// 	for (auto i(0); first != last; ++first, ++i)
-			// 		m_data[i] = (*first);
-			// 	shrink_to_fit();
-			// }
+			template < typename InputItr >
+			vector( InputItr first, InputItr last)
+			{
+				int cont = 0;
+				auto f = first;
+				while ( f != last )
+				{
+					f++;
+					cont++;
+				}
+				//construindo vector
+				m_data = new T[cont];
+				m_size = cont;
+				m_len = 0;
+
+				int aux = 0;
+				for (/*empty*/; first != last ; ++first, ++aux)
+				{
+					m_data[aux] = *first;
+					m_len++;
+
+				}
+			}
+
+			vector( std::initializer_list<T> ilist )
+			{
+				auto size = ilist.size();
+				m_data = new T[size];
+				m_size = size;
+				m_len = 0;
+				
+				int aux = 0;
+				for (const T * i = ilist.begin(); i != ilist.end() ; ++i, ++aux)
+				{
+					m_data[aux] = *i;
+					m_len++;
+
+				}
+			}
 
 			vector &operator= ( const vector & other );
 			
@@ -160,7 +188,7 @@
 			template < typename InputItr >
 			iterator insert( iterator pos, InputItr first, InputItr last);
 
-			// iterator insert( iterator, std::initializer_list< value_type > );
+			iterator insert( iterator, std::initializer_list< T > );
 			
 			void reserve( void );
 
@@ -168,14 +196,13 @@
 			
 			void assign( const_reference value);
 			
-			//initializer é {1, 2, 3, 4 }
 			void assign( std::initializer_list<T> value );
 			
-			// template < typename InputItr >
-			// void assign( InputItr, InputItr );
+			template < typename InputItr >
+			void assign( InputItr, InputItr );
 
-			// iterator erase( iterator, iterator );
-			// iterator erase( iterator pos );
+			iterator erase( iterator, iterator );
+			iterator erase( iterator pos );
 
 			// [V] Element access
 			const_reference back( void ) const;

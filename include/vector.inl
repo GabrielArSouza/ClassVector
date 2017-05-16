@@ -1,15 +1,5 @@
 // [I] SPECIAL MEMBERS
 
-/*>>std::distance e alocar a memória com o tamanho e o copy<<*/
-// template < typename InputItr >
-// vector( InputItr first, InputItr last)
-// {
-// 	m_data = new T;
-// 	for (auto i(0); first != last; ++first, ++i)
-// 		m_data[i] = (*first);
-// 	shrink_to_fit();
-// }
-
 template <typename T>
 ls::vector<T> &ls::vector<T>::operator=
 ( const vector & other )
@@ -130,6 +120,8 @@ template <typename T>
 typename ls::vector<T>::iterator ls::vector<T>::insert
 ( iterator pos, const_reference value )
 {
+	if ( this->full() ) this->reserve();
+
 	auto i = 0;
 	auto cont = 0;
 	
@@ -167,6 +159,7 @@ typename ls::vector<T>::iterator ls::vector<T>::insert
 		temp++;
 	} 
 	
+	while ( (m_len + d) > m_size ) this->reserve();
 	std::copy(&m_data[cont], &m_data[m_len], &m_data[cont+d]);
 
 	for (/*empty*/; first != last; ++first, ++cont)
@@ -180,7 +173,34 @@ typename ls::vector<T>::iterator ls::vector<T>::insert
 
 }
 
-// iterator insert( iterator, std::initializer_list< value_type > );
+template <typename T>
+typename ls::vector<T>::iterator ls::vector<T>::insert
+( iterator pos, std::initializer_list< T > ilist)
+{
+	auto i = 0;
+	auto cont = 0;
+	
+	//encontrar local de inserção
+	while ( *pos != m_data[i] )
+	{
+		cont++;
+		i++;
+	}
+
+	auto tam = ilist.size();
+	while ( (m_len + tam) > m_size ) this->reserve();
+	std::copy(&m_data[cont], &m_data[m_len], &m_data[cont+tam]);
+
+	for (auto first(ilist.begin()); first != ilist.end(); ++first, ++cont)
+	{
+		m_data[cont] = *first;
+		m_len++;
+
+	}
+
+	return pos;
+
+}
 
 template <typename T>
 void ls::vector<T>::reserve( void )
@@ -208,22 +228,73 @@ void ls::vector<T>::assign( const_reference value)
 		*(m_data+i) = value;
 }
 
-//initializer é {1, 2, 3, 4 }
 template <typename T>
 void ls::vector<T>::assign( std::initializer_list<T> value )
 {
 	if ( this->empty() )
 		throw std::out_of_range("[assign()]: Cannot recover an element from an empty vector!");
 
-	for (auto i(0u); i <= m_len; ++i)
-		*(m_data+i) = value;
+	unsigned int i = 0;
+	auto elem_list = value.begin();
+	while ( i != m_len )
+	{
+		if ( elem_list == value.end() ) 
+			elem_list = value.begin();
+		m_data[i++] = *elem_list++;
+	}
+
 }
 
-// template < typename InputItr >
-// void assign( InputItr, InputItr );
+template <typename T>
+template < typename InputItr >
+void ls::vector<T>::assign( InputItr first, InputItr last )
+{
+	if ( this->empty() )
+		throw std::out_of_range("[assign()]: Cannot recover an element from an empty vector!");	
 
-// iterator erase( iterator, iterator );
-// iterator erase( iterator pos );
+	auto elem_intr = first;
+	unsigned int i = 0;
+	while ( i != m_len )
+	{
+		if ( elem_intr == last )
+			elem_intr = first;
+		m_data[i++] = *elem_intr;
+		elem_intr++;
+	}
+}
+
+template < typename T>
+typename ls::vector<T>::iterator ls::vector<T>::erase
+( iterator first, iterator last )
+{
+	auto init_er = last;
+	while ( init_er != this->end() )
+	{
+		*first = *init_er;
+		first++;
+		init_er++;
+	}
+
+
+	auto cont = 0;
+	auto t = first;
+	while ( t != last )
+	{
+		cont++;
+		t++;
+	}
+	m_len = m_len - cont;
+
+	return --first;
+}
+
+template < typename T>
+typename ls::vector<T>::iterator ls::vector<T>::erase
+( iterator pos )
+{
+	//TODO 
+	return --pos;
+}
 
 // [V] Element access
 template <typename T>
@@ -328,7 +399,7 @@ void ls::vector<T>::print () const
 }
 
 template <typename T>
-const T & ls::vector<T>::iterator::operator* ( ) const
+T & ls::vector<T>::iterator::operator* ( )
 {
 	assert( m_ptr != nullptr );
 	return *m_ptr;
