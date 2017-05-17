@@ -275,7 +275,6 @@ typename ls::MyIterator<T> ls::vector<T>::erase
 		init_er++;
 	}
 
-
 	auto cont = 0;
 	auto t = first;
 	while ( t != last )
@@ -292,8 +291,20 @@ template < typename T>
 typename ls::MyIterator<T> ls::vector<T>::erase
 ( iterator pos )
 {
-	//TODO 
-	return --pos;
+	//TODO
+	auto fixed = pos;
+	auto ponter = pos;
+	auto init = ++pos; 
+
+	while ( init != this->end() )
+	{
+		*ponter = *init;
+		ponter++;
+		init++;
+	}
+	m_len--;
+
+	return --fixed;
 }
 
 // [V] Element access
@@ -351,8 +362,17 @@ ls::vector<T>::at( size_type pos )
 	return m_data[pos];
 }
 
-//pointer data( void );
-// const_reference data( void ) const;
+template <typename T>
+T * ls::vector<T>::data( void )
+{
+	return &m_data[0];
+}
+
+template <typename T>
+const T * ls::vector<T>::data( void ) const
+{
+	return &m_data[0];
+}
 
 // [VI] Operators
 template <typename T>
@@ -385,7 +405,15 @@ bool ls::vector<T>::operator!=( const vector & rhs ) const
 
 // [VII] Friend functions.
 /*uma função, ele não é um método*/
-//friend std::ostream & operator<<( std::ostream & os_, const Vector<T> & v_ );
+// template <typename T>
+// friend std::ostream & ls::vector<T>::operator<<
+// ( std::ostream & os_, const ls::vector<T> & v_ )
+// {
+// 	std::copy( &m_data[0], &m_data[m_len],
+//                std::ostream_iterator< T >os_(std::cout, " ") );
+// 	return  os_;
+	
+// }
 // friend void swap( Vector<T> & first_, Vector<T> & second_ );
 // 
 template <typename T>

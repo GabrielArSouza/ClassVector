@@ -48,7 +48,7 @@
 
 				bool operator!= ( const MyIterator & rhs ) const;;
 
-			};
+		};
 
 		template <typename T>
 		class vector {
@@ -218,8 +218,8 @@
 
 			reference at( size_type pos );
 
-			//pointer data( void );
-			// const_reference data( void ) const;
+			T * data( void );
+			const T * data( void ) const;
 
 			// [VI] Operators
 			bool operator==( const vector & rhs ) const;
@@ -228,7 +228,7 @@
 
 			// [VII] Friend functions.
 			/*uma função, ele não é um método*/
-			//friend std::ostream & operator<<( std::ostream & os_, const Vector<T> & v_ );
+			//friend std::ostream & operator<<( std::ostream & os_, const vector<T> & v_ );
 			// friend void swap( Vector<T> & first_, Vector<T> & second_ );
 			// 
 			void print () const;

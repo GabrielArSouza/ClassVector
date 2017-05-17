@@ -155,14 +155,20 @@ int main ()
 		v6.print();
 	}
 	//teste erase
-	// {
-	// 	ls::vector<int> v6 {1, 2, 3, 4, 5};
-	// 	std::cout << "BEFORE ERASE: ";
-	// 	v6.print();
-	// 	v6.erase(v6.begin());
-	// 	std::cout << "AFTER: ";
-	// 	v6.print();
-	// }
+	{
+		ls::vector<int> v6 {1, 2, 3, 4, 5};
+		assert( v6.front() == 1);
+		std::cout << "BEFORE ERASE: ";
+		v6.print();
+		v6.erase(&v6[4]);
+		std::cout << "AFTER: ";
+		v6.print();
+
+		//testando <<
+		//std::cout << v6;
+		
+		v6.data();
+	}
 
 
 
