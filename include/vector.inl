@@ -25,24 +25,24 @@ ls::vector<T> &ls::vector<T>::operator=
 
 // [II] ITERATORS
 template <typename T>
-typename ls::vector<T>::iterator
+typename ls::MyIterator<T>
 ls::vector<T>::begin( void )
-{ return ls::vector<T>::iterator ( &m_data[0] ); }
+{ return ls::MyIterator<T> ( &m_data[0] ); }
 
 template <typename T>
-typename ls::vector<T>::iterator
+typename ls::MyIterator<T>
 ls::vector<T>::end( void )
-{ return ls::vector<T>::iterator ( &m_data[m_len] ); }
+{ return ls::MyIterator<T> ( &m_data[m_len] ); }
 
 template <typename T>
-typename ls::vector<T>::const_iterator 
+typename ls::MyIterator<const T>
 ls::vector<T>::cbegin( void ) const
-{ return ls::vector<T>::const_iterator ( &m_data[0] ); }
+{ return ls::MyIterator< const T> ( &m_data[0] ); }
 
 template <typename T>
-typename ls::vector<T>::const_iterator
+typename ls::MyIterator<const T>
 ls::vector<T>::cend( void ) const
-{ return ls::vector<T>::const_iterator ( &m_data[m_len] ); }
+{ return ls::MyIterator<const T> ( &m_data[m_len] ); }
 
 // [III] Capacity
 template <typename T> 
@@ -117,7 +117,7 @@ void ls::vector<T>::pop_front( void )
 }
 
 template <typename T>
-typename ls::vector<T>::iterator ls::vector<T>::insert
+typename ls::MyIterator<T> ls::vector<T>::insert
 ( iterator pos, const_reference value )
 {
 	if ( this->full() ) this->reserve();
@@ -140,7 +140,7 @@ typename ls::vector<T>::iterator ls::vector<T>::insert
 
 template <typename T>
 template <typename InputItr>
-typename ls::vector<T>::iterator ls::vector<T>::insert
+typename ls::MyIterator<T> ls::vector<T>::insert
 ( iterator pos, InputItr first, InputItr last)
 {
 	auto i = 0;
@@ -174,7 +174,7 @@ typename ls::vector<T>::iterator ls::vector<T>::insert
 }
 
 template <typename T>
-typename ls::vector<T>::iterator ls::vector<T>::insert
+typename ls::MyIterator<T> ls::vector<T>::insert
 ( iterator pos, std::initializer_list< T > ilist)
 {
 	auto i = 0;
@@ -264,7 +264,7 @@ void ls::vector<T>::assign( InputItr first, InputItr last )
 }
 
 template < typename T>
-typename ls::vector<T>::iterator ls::vector<T>::erase
+typename ls::MyIterator<T> ls::vector<T>::erase
 ( iterator first, iterator last )
 {
 	auto init_er = last;
@@ -289,7 +289,7 @@ typename ls::vector<T>::iterator ls::vector<T>::erase
 }
 
 template < typename T>
-typename ls::vector<T>::iterator ls::vector<T>::erase
+typename ls::MyIterator<T> ls::vector<T>::erase
 ( iterator pos )
 {
 	//TODO 
@@ -399,7 +399,7 @@ void ls::vector<T>::print () const
 }
 
 template <typename T>
-T & ls::vector<T>::iterator::operator* ( )
+T & ls::MyIterator<T>::operator* ( )
 {
 	assert( m_ptr != nullptr );
 	return *m_ptr;
@@ -407,8 +407,8 @@ T & ls::vector<T>::iterator::operator* ( )
 
 // ++it;
 template <typename T>
-typename ls::vector<T>::iterator 
-& ls::vector<T>::iterator::operator++ ( )
+typename ls::MyIterator<T> 
+& ls::MyIterator<T>::operator++ ( )
 {
 	m_ptr++;
 	return *this;
@@ -416,8 +416,8 @@ typename ls::vector<T>::iterator
 
 // it++;
 template <typename T>
-typename ls::vector<T>::iterator 
-ls::vector<T>::iterator::operator++ ( int a )
+typename ls::MyIterator<T>
+ls::MyIterator<T>::operator++ ( int a )
 {
 	MyIterator temp = *this;
 	m_ptr++;
@@ -426,8 +426,8 @@ ls::vector<T>::iterator::operator++ ( int a )
 
 // --it;
 template <typename T>
-typename ls::vector<T>::iterator 
-& ls::vector<T>::iterator::operator-- ( )
+typename ls::MyIterator<T>
+& ls::MyIterator<T>::operator-- ( )
 {
 	m_ptr--;
 	return *this;
@@ -435,8 +435,8 @@ typename ls::vector<T>::iterator
 
 // it--;
 template <typename T>
-typename ls::vector<T>::iterator 
-ls::vector<T>::iterator::operator-- ( int a )
+typename ls::MyIterator<T>
+ls::MyIterator<T>::operator-- ( int a )
 {
 	MyIterator temp = *this;
 	m_ptr--;
@@ -444,13 +444,13 @@ ls::vector<T>::iterator::operator-- ( int a )
 }
 
 template <typename T> 
-bool ls::vector<T>::iterator::operator== ( const MyIterator & rhs ) const
+bool ls::MyIterator<T>::operator== ( const MyIterator & rhs ) const
 {
 	return m_ptr == rhs.m_ptr;
 }
 
 template <typename T>
-bool ls::vector<T>::iterator::operator!= ( const MyIterator & rhs ) const
+bool ls::MyIterator<T>::operator!= ( const MyIterator & rhs ) const
 {
 	return m_ptr != rhs.m_ptr;
 }

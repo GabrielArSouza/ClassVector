@@ -14,9 +14,7 @@
 		using size_type = size_t;
 
 		template <typename T>
-		class vector {
-
-			class MyIterator {
+		class MyIterator {
 
 			private:
 				T *m_ptr;
@@ -51,11 +49,14 @@
 				bool operator!= ( const MyIterator & rhs ) const;;
 
 			};
-			
+
+		template <typename T>
+		class vector {
+						
 		public:
 			const static size_type DEFAULT_SIZE = 10;
-			using iterator = MyIterator ;
-			using const_iterator = MyIterator const ;
+			using iterator = MyIterator<T> ;
+			using const_iterator = MyIterator<const T> ;
 			using const_reference = const T &;
 			using reference = T &; 
 
