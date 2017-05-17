@@ -1,3 +1,10 @@
+/**
+ * @file main.cpp
+ * @author Gabriel Araújo de Souza
+ * @date 17 May 2017
+ * @brief Arquivo para testes dos métodos das classes vector e MyIterator
+ */
+
 #include <cassert>
 #include "vector.h"
 
@@ -158,6 +165,7 @@ int main ()
 	{
 		ls::vector<int> v6 {1, 2, 3, 4, 5};
 		assert( v6.front() == 1);
+		assert(v6.back() == 5);
 		std::cout << "BEFORE ERASE: ";
 		v6.print();
 		v6.erase(&v6[2]);

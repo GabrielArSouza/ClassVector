@@ -1,3 +1,10 @@
+/**
+ * @file vector.inl
+ * @author Gabriel Araújo de Souza
+ * @date 17 May 2017
+ * @brief Arquivo contendo as implementações das classes vector e MyIterator
+ */
+
 // [I] SPECIAL MEMBERS
 
 template <typename T>
@@ -284,7 +291,7 @@ typename ls::MyIterator<T> ls::vector<T>::erase
 	}
 	m_len = m_len - cont;
 
-	return --first;
+	return first;
 }
 
 template < typename T>
@@ -313,7 +320,7 @@ ls::vector<T>::back( void ) const
 	if ( this->empty() )
 		throw std::out_of_range("[back()]: Cannot recover an element from an empty vector!");
 
-	return m_data[m_len];
+	return m_data[m_len-1];
 }
 
 template <typename T>

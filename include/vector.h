@@ -1,3 +1,10 @@
+/**
+ * @file vector.h
+ * @author Gabriel Araújo de Souza
+ * @date 17 May 2017
+ * @brief Arquivo contendo as definições das classes vector e MyIterator
+ */
+
 #ifndef _VECTOR_H_
 #define _VECTOR_H_
 
@@ -121,10 +128,18 @@
 
 		};
 
+		/**
+		 * @brief      Classe Vector
+		 *
+		 * @tparam     T     template
+		 */
 		template <typename T>
 		class vector {
 						
 		public:
+			/**
+			 * Definições para facilitar a implementação
+			 */
 			const static size_type DEFAULT_SIZE = 10;
 			using iterator = MyIterator<T> ;
 			using const_iterator = MyIterator<const T> ;
@@ -182,6 +197,15 @@
 				other.m_data = nullptr;
 			}
 
+			/**
+			 * @brief      Constrói um vector com o tamanho e elementos presentes
+			 *             no intervalo fornecido
+			 *
+			 * @param[in]  first     Inicio do intervalo
+			 * @param[in]  last      Final do intervalo
+			 *
+			 * @tparam     InputItr  para tipos de intervalo genérico
+			 */
 			template < typename InputItr >
 			vector( InputItr first, InputItr last)
 			{
@@ -206,6 +230,11 @@
 				}
 			}
 
+			/**
+			 * @brief      Constrói um vector a partir de uma lista fornecida
+			 *
+			 * @param[in]  ilist  Lista fornecida
+			 */
 			vector( std::initializer_list<T> ilist )
 			{
 				auto size = ilist.size();
@@ -222,86 +251,317 @@
 				}
 			}
 
+			/**
+			 * @brief      Atribui o operador '=' para a construção de um vector
+			 *             igualmente a outro fornecido sem modificá-lo
+			 *
+			 * @param[in]  other  Vector que se deseja clonar
+			 *
+			 * @return     Um novo vector com as mesmas características do
+			 *             fornecido
+			 */
 			vector &operator= ( const vector & other );
 			
+			/**
+			 * @brief      Atribui o operador '=' para a construção de um vector
+			 *             igualmente a outro fornecido com lógica de movimento
+			 *
+			 * @param[in]  other  Vector que se deseja clonar
+			 *
+			 * @return     Um novo vector com as mesmas características do
+			 *             fornecido
+			 */
 			vector &operator= ( vector && other);
 
 			// [II] ITERATORS
+			
+			/**
+			 * @brief      Fornece um ponteiro para o primeiro elemento do vector
+			 *
+			 * @return     Um iterador para o primeiro elemento do vector
+			 */
 			iterator begin( void );
 
+			/**
+			 * @brief      Fornece um ponteiro para o espaço depois do último 
+			 *             elemento válido
+			 *
+			 * @return     Um iterador para o próximo espeço logo após o ultimo
+			 *             elemento válido do vetor
+			 */
 			iterator end( void );
 
+			/**
+			 * @brief      Fornece um ponteiro constante para o primeiro elemento
+			 *             do vector
+			 *
+			 * @return     Um iterador constante para o primeiro elemento do vector
+			 */
 			const_iterator cbegin( void ) const;
 
+			/**
+			 * @brief      Fornece um ponteiro constante para o espaço depois do último 
+			 *             elemento válido
+			 *
+			 * @return     Um iterador constante para o próximo espeço, logo após o ultimo
+			 *             elemento válido do vetor
+			 */
 			const_iterator cend( void ) const;
 
 			// [III] Capacity
+			
+			/**
+			 * @brief      Fornece a quantidade de elemento do vetor
+			 *
+			 * @return     A quantidade de elementos no vetor
+			 */
 			size_type size( void ) const;
 
+			/**
+			 * @brief      Fornece a capacidade máxima atual de elementos que 
+			 *             cabem no vector
+			 *
+			 * @return     A atual capacidade máxima do vector
+			 */
 			size_type capacity( void ) const;
 
+			/**
+			 * @brief      Verifica se o vector está vazio
+			 *
+			 * @return     Sim, caso o vector esteja vazio, não, caso contrário.
+			 */
 			bool empty( void ) const;
 
+			/**
+			 * @brief      Verifica se o vector está lotado
+			 *
+			 * @return     Sim, caso o vector esteja na sua capacidade máxima,
+			 *             não, caso contrário
+			 */
 			bool full( void ) const;
 
 			// [IV] Modifiers
+			
+			/**
+			 * @brief      Limpa o vector, removendo todos seus elementos
+			 */
 			void clear( void );
 
+			/**
+			 * @brief      Insere um elemento no inicio do vector
+			 *
+			 * @param[in]  value  o valor que se dejesa inserir
+			 */
 			void push_front( const_reference value );
 
+			/**
+			 * @brief      Insere um elemento no final do vector
+			 *
+			 * @param[in]  value  o valor que se deseja inserir
+			 */
 			void push_back( const_reference value );
 
+			/**
+			 * @brief      Remove o ultimo elemento do vector
+			 */
 			void pop_back( void );
 
+			/**
+			 * @brief      Remove o primeiro elemento do vector
+			 */
 			void pop_front( void );
 
+			/**
+			 * @brief      Insere um elemento na posição do vector informada
+			 *
+			 * @param[in]  pos    A posição que se deseja inserir o elemento
+			 * @param[in]  value  O valor que se deseja inserir
+			 *
+			 * @return     Um iterado para a posição do elemento inserido
+			 */
 			iterator insert( iterator pos, const_reference value );
 
+			/**
+			 * @brief      Insere um intervalo de elementos a partir de uma 
+			 *             posição informada
+			 *
+			 * @param[in]  pos       a posição que se deseja inserir o elementos
+			 * @param[in]  first     O inicío do intervalo de elementos
+			 * @param[in]  last      o final do intervalo de elementos
+			 *
+			 * @tparam     InputItr  Implementação para intervalos genéricos
+			 *
+			 * @return     Um iterador para o inicio do intervalo inserido
+			 */
 			template < typename InputItr >
 			iterator insert( iterator pos, InputItr first, InputItr last);
 
-			iterator insert( iterator, std::initializer_list< T > );
+			/**
+			 * @brief      Insere uma lista de elementos a partir de uma 
+			 *             posição informada
+			 *
+			 * @param[in]  pos    o local onde deve se inserir a lista
+			 * @param[in]  ilist  A lista que se dejesa inserir
+			 *
+			 * @return     Um iterado para a posição inserida
+			 */
+			iterator insert( iterator pos, std::initializer_list< T > ilist );
 			
+			/**
+			 * @brief      Dobra a capacidade atual do vector
+			 */
 			void reserve( void );
 
+			/**
+			 * @brief      Remove os espaços não utilizados do vector
+			 */
 			void shrink_to_fit( void );
 			
+			/**
+			 * @brief      Transforma todos os elementos do vector em um 
+			 *             valor fornecido
+			 *
+			 * @param[in]  value  o valor
+			 */
 			void assign( const_reference value);
 			
+			/**
+			 * @brief      transforma todos os elementos do vector em repetições
+			 *             de valores presentes em uma lista fornecida
+			 *
+			 * @param[in]  value  a lista com elementos para atribuir
+			 */
 			void assign( std::initializer_list<T> value );
 			
+			/**
+			 * @brief      Tranforma todos os elementos do vector em repetições
+			 *             de elementos presentes em um intervalo fechado-aberto fornecido
+			 *
+			 * @param[in]  first     O inicio do intervalo
+			 * @param[in]  last      final do intervalo ( aberto )
+			 *
+			 * @tparam     InputItr  Implementação para tipos de intervalo genérico
+			 */
 			template < typename InputItr >
-			void assign( InputItr, InputItr );
+			void assign( InputItr first, InputItr last);
 
-			iterator erase( iterator, iterator );
+			/**
+			 * @brief      Remove um intervalo fechado-aberto do vector
+			 *
+			 * @param[in]  first  incício do intervalo
+			 * @param[in]  last   fim do intervalo
+			 *
+			 * @return     o iterador para o ultimo elemento apagado.
+			 */
+			iterator erase( iterator first, iterator last );
+
+			/**
+			 * @brief      Remove um elemento do vector
+			 *
+			 * @param[in]  pos   A posição do elemento que se deseja remover
+			 *
+			 * @return     o iterado para o o final da lista
+			 */
 			iterator erase( iterator pos );
 
 			// [V] Element access
+			
+			/**
+			 * @brief      Acessa o ultimo elemento do vector
+			 *
+			 * @return     O ultimo elemento do vector
+			 */
 			const_reference back( void ) const;
 
+			/**
+			 * @brief      Acessa o primeiro elemento do vector
+			 *
+			 * @return     O primeiro elemento do vector
+			 */
 			const_reference front( void ) const;
 
+			/**
+			 * @brief      Atribui o siginificado do operador [], que acessa
+			 *             o valor na posição do vector fornecida nos [].
+			 *
+			 * @param[in]  pos   A posição informada
+			 *
+			 * @return     O objeto constante presente na posição informada
+			 */
 			const_reference operator[]( size_type pos ) const;
 			
+			/**
+			 * @brief      Atribui o siginificado do operador [], que acessa
+			 *             o valor na posição do vector fornecida nos [].
+			 *
+			 * @param[in]  pos   A posição informada
+			 *
+			 * @return     O objeto presente na posição informada
+			 */
 			reference operator[]( size_type pos );
 
+			/**
+			 * @brief      Acessa o elemento na posição informada
+			 *
+			 * @param[in]  pos   A posição informada
+			 *
+			 * @return     O elemento constante na posição informada
+			 */
 			const_reference at( size_type pos ) const;
 
+			/**
+			 * @brief      Acessa o elemento na posição informada
+			 *
+			 * @param[in]  pos   A posição informada
+			 *
+			 * @return     O elemento na posição informada
+			 */
 			reference at( size_type pos );
 
+			/**
+			 * @brief      Acessa o primeiro elemento do vector
+			 *
+			 * @return     Um ponteiro para o primeiro elemento do vector
+			 */
 			T * data( void );
+
+			/**
+			 * @brief      Acessa o primeiro elemento do vector
+			 *
+			 * @return     Um ponteiro constante para o primeiro elemento do vector
+			 */
 			const T * data( void ) const;
 
 			// [VI] Operators
+			
+			/**
+			 * @brief      Verifica se dois vetores são iguais
+			 *
+			 * @param[in]  rhs   o vector que se deseja comparar
+			 *
+			 * @return     Sim, caso os vetores sejam iguais, não, caso contrário
+			 */
 			bool operator==( const vector & rhs ) const;
 			
+			/**
+			 * @brief      Verifica se dois vetores são diferentes
+			 *
+			 * @param[in]  rhs   o vector que se deja comparar
+			 *
+			 * @return     Sim, caso eles sejam diferente, não, se contrário.
+			 */
 			bool operator!=( const vector & rhs ) const;
 
+			/**
+			 * @brief      Imprime na saída padrão, o vetor informado
+			 */
 			void print () const;
 
 	};
 
-	
+	/**
+	 * impletação do template.
+	 */
 	#include "vector.inl"
 } 
 
