@@ -291,8 +291,6 @@ template < typename T>
 typename ls::MyIterator<T> ls::vector<T>::erase
 ( iterator pos )
 {
-	//TODO
-	auto fixed = pos;
 	auto ponter = pos;
 	auto init = ++pos; 
 
@@ -304,7 +302,7 @@ typename ls::MyIterator<T> ls::vector<T>::erase
 	}
 	m_len--;
 
-	return --fixed;
+	return ponter;
 }
 
 // [V] Element access

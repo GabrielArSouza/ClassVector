@@ -160,7 +160,7 @@ int main ()
 		assert( v6.front() == 1);
 		std::cout << "BEFORE ERASE: ";
 		v6.print();
-		v6.erase(&v6[4]);
+		v6.erase(&v6[2]);
 		std::cout << "AFTER: ";
 		v6.print();
 

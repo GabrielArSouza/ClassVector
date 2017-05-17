@@ -1,51 +1,122 @@
 #ifndef _VECTOR_H_
 #define _VECTOR_H_
 
-	#include <iostream>
-	#include <string>
-	#include <iterator>
+	#include <iostream> //std::cout 
+	#include <string> //std::string
+	#include <iterator> 
 	#include <stdexcept> // out_of_range
-	#include <cassert>
-	#include <algorithm>
+	#include <cassert> //assert
+	#include <algorithm> //std::copy
 
 	namespace ls 
 	{
-
+		//<! formato dos sizes 
 		using size_type = size_t;
 
+		/**
+		 * @brief      Classe do iterador usado na classe vector
+		 *
+		 * @tparam     T     parâmetro para o template
+		 */
 		template <typename T>
 		class MyIterator {
 
 			private:
-				T *m_ptr;
+				T *m_ptr; //<! poteiro que representa o iterado
 
 			public:
 
+				/**
+				 * @brief      Construtor Default
+				 *
+				 * @param      ptr_  O iterador
+				 */
 				MyIterator( T * ptr_ = nullptr ) 
 					:m_ptr( ptr_ )
 				{ /*empty*/ } 
 
+				/**
+				 * @brief      Destroi o objeto.
+				 */
 				~MyIterator() = default;
+
+				/**
+				 * @brief      construtor cópia
+				 *
+				 * @param[in]  recebe um iterador e constroi a cópia default
+				 */
 				MyIterator( const MyIterator & ) = default;
+
+				/**
+				 * @brief      Utiliza o operador =
+				 *
+				 * @param[in]  recebe um iterador
+				 *
+				 * @return     faz a atribuição default para o operador =
+				 */
 				MyIterator & operator=( const MyIterator & ) = default;
 
+				/**
+				 * @brief      Acessa o valor que o ponteiro guarda, equivalente ao
+				 *             usar o * sobre um iterador para saber o valor salvo 
+				 *             naquele endereço de memória.
+				 *
+				 * @return     o valor salvo no endereço de memória do ponteiro
+				 */
 				T & operator* ( );
 				
-				// ++it;
+				/**
+				 * @brief      Avança para o próximo endereço de memória, equivalente ao
+				 *             usar o ++it para acessar o próximo do vector
+				 *
+				 * @return     O iterador para o próximo espaço de memória usado pelo vector
+				 */
 				MyIterator & operator++ ( );	
 
-				// it++;
+				/**
+				 * @brief      Avança para o próximo endereço de memória, equivalente ao
+				 *             usar o it++ para acessar o próximo do vector
+				 *
+				 * @param[in]  a     default, padrão para esse tipo de implementação
+				 *
+				 * @return     O iterador para o próximo espaço de memória usado pelo vector
+				 */
 				MyIterator operator++ ( int a );		
 
-				// --it;
+				/**
+				 * @brief      retorna para o endereço de memória anterior ao atual equivalen
+				 *             te ao usar o --it para acessar um elemento antes
+				 *
+				 * @return     O iterador para o espaço de memória anterior ao atual
+				 */
 				MyIterator & operator-- ( ); 
 
-				// it--;
+				/**
+				 * @brief      retorna para o endereço de memória anterior ao atual equivalen
+				 *             te ao usar o it-- para acessar um elemento antes
+				 *
+				 * @param[in]  a     default, padrão para esse tipo de implementação
+				 *
+				 * @return     O iterador para o espaço de memória anterior ao atual
+				 */
 				MyIterator operator-- ( int a );
 
-				// 
+				/**
+				 * @brief      compara se dois iteradores são iguais
+				 *
+				 * @param[in]  rhs   o iterador que se deseja comparar
+				 *
+				 * @return     Sim, caso sejam iguais, não se forem diferentes
+				 */
 				bool operator== ( const MyIterator & rhs ) const;
 
+				/**
+				 * @brief      Verifica de dois iteradores são diferentes
+				 *
+				 * @param[in]  rhs   o iterador que se deseja comparar
+				 *
+				 * @return     sim, caso sejam diferentes, não se forem iguais
+				 */
 				bool operator!= ( const MyIterator & rhs ) const;;
 
 		};
