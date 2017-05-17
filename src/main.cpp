@@ -164,9 +164,6 @@ int main ()
 		std::cout << "AFTER: ";
 		v6.print();
 
-		//testando <<
-		//std::cout << v6;
-		
 		v6.data();
 	}
 

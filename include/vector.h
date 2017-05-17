@@ -226,11 +226,6 @@
 			
 			bool operator!=( const vector & rhs ) const;
 
-			// [VII] Friend functions.
-			/*uma função, ele não é um método*/
-			//friend std::ostream & operator<<( std::ostream & os_, const vector<T> & v_ );
-			// friend void swap( Vector<T> & first_, Vector<T> & second_ );
-			// 
 			void print () const;
 
 	};

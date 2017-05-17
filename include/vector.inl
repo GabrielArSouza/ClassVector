@@ -403,19 +403,6 @@ bool ls::vector<T>::operator!=( const vector & rhs ) const
 	return false;
 }
 
-// [VII] Friend functions.
-/*uma função, ele não é um método*/
-// template <typename T>
-// friend std::ostream & ls::vector<T>::operator<<
-// ( std::ostream & os_, const ls::vector<T> & v_ )
-// {
-// 	std::copy( &m_data[0], &m_data[m_len],
-//                std::ostream_iterator< T >os_(std::cout, " ") );
-// 	return  os_;
-	
-// }
-// friend void swap( Vector<T> & first_, Vector<T> & second_ );
-// 
 template <typename T>
 void ls::vector<T>::print () const 
 {
