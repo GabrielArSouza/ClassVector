@@ -5,7 +5,7 @@
  * @brief Arquivo para testes dos métodos das classes vector e MyIterator
  */
 
-#include <cassert>
+#include <cassert> // assert
 #include "vector.h"
 
 

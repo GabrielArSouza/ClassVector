@@ -183,6 +183,8 @@
 			{
 				m_data = new T;
 				*m_data = *copy.m_data;
+				m_len = copy.m_len;
+				m_size = copy.m_size;
 			}	
 
 			/**
@@ -194,6 +196,8 @@
 			{
 				m_data = new T;
 				m_data = other.m_data;
+				m_len = other.m_len;
+				m_size = other.m_size;
 				other.m_data = nullptr;
 			}
 
